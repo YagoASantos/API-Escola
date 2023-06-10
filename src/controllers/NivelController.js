@@ -1,9 +1,11 @@
 const db = require('../models');
+const Services = require('../services/Services');
+const niveisServices = new Services('Niveis');
 
 class NivelController {
     static async pegaTodosOsNiveis (req, res) {
         try{
-            const niveis = await db.Niveis.findAll();
+            const niveis = await niveisServices.pegaTodosOsRegistros();
             return res.status(200).json(niveis);
         } catch(err) {
             return res.status(500).json(err.message);
