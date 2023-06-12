@@ -1,10 +1,10 @@
 const db = require('../models');
 const Services = require('./Services');
 
-class TurmasServices extends Services {
+class MatriculasServices extends Services {
     constructor() {
-        super('Turmas');
+        super('Matriculas');
     }
 }
 
-module.exports = TurmasServices;
+module.exports = MatriculasServices;

@@ -1,4 +1,3 @@
-const db = require('../models');
 const { NiveisServices } = require('../services');
 const niveisServices = new NiveisServices();
 
@@ -15,11 +14,7 @@ class NivelController {
     static async pegaUmNivel (req, res) {
         const { id } = req.params;
         try{
-            const nivel = await db.Niveis.findOne({
-                where: {
-                    id: id
-                }
-            });
+            const nivel = await niveisServices.pegaUmRegistro(id);
             return res.status(200).json(nivel);
         } catch(err) {
             return res.status(500).json(err.message);
@@ -29,7 +24,7 @@ class NivelController {
     static async criaNivel (req, res) {
         const novoNivel = req.body;
         try{
-            const nivel = await db.Niveis.create(nivel);
+            const nivel = await niveisServices.criaUmRegistro(novoNivel);
             return res.status(201).json(nivel);
         } catch(err) {
             return res.status(500).json(err.message);
@@ -40,8 +35,8 @@ class NivelController {
         const { id } = req.params;
         const novasInfos = req.body;
         try{
-            await db.Niveis.update(novasInfos, {where: {id: Number(id)}});
-            const nivel = await db.Niveis.findOne({where: {id: Number(id)}});
+            await niveisServices.atualizaRegistro(novasInfos, id);
+            const nivel = await niveisServices.pegaUmRegistro(id);
             return res.status(200).json(nivel);
         } catch(err) {
             return res.status(500).json(err.message);
@@ -51,7 +46,7 @@ class NivelController {
     static async apagaNivel (req, res) {
         const { id } = req.params;
         try{
-            await db.Niveis.destroy({where: {id: Number(id)}});
+            await niveisServices.apagaRegistro(id);
             return res.status(200).json({ message: 'Nivel apagado com sucesso!' });
         } catch(err) {
             return res.status(500).json(err.message);
@@ -61,7 +56,7 @@ class NivelController {
     static async restauraNivel (req, res) {
         const { id } = req.params;
         try{
-            await db.Niveis.restore( { where: { id: Number(id) } } );
+            await niveisServices.restauraRegistro(id);
             return res.status(200).json( { message: `Id ${id} excluído com sucesso.` } );
         } catch(err) {
             return res.status(500).json(err.message);
